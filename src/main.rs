@@ -1,7 +1,10 @@
 use yew::{function_component, html, Callback, Html, Properties};
+use yew_router::prelude::*;
 
 mod generic;
-use generic::GenericComponent;
+mod router;
+
+use router::{switch, Route};
 
 #[derive(Properties, PartialEq)]
 pub struct Props {
@@ -17,17 +20,10 @@ fn HelloWorld(props: &Props) -> Html {
 // Then supply the prop
 #[function_component]
 fn App() -> Html {
-    let on_name_entry: Callback<String> = Callback::from(move |name: String| {
-        let greeting = format!("HEY, {}!", name);
-        web_sys::console::log_1(&greeting.into());
-    });
-
     html! {
-        <>
-            <HelloWorld {on_name_entry} />
-            <GenericComponent<i32> data=123 />
-            <GenericComponent<String> data={"foo".to_string()} />
-        </>
+        <BrowserRouter>
+            <Switch<Route> render={switch} />
+        </BrowserRouter>
     }
 }
 
